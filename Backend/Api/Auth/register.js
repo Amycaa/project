@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Ellenőrizzük, hogy létezik-e már a felhasználó
     const userCheck = await pool.query(
       "SELECT * FROM users WHERE username = $1",
       [felhasznaloNev]
@@ -21,7 +22,6 @@ export default async function handler(req, res) {
     if (userCheck.rows.length > 0) {
       return res.status(409).json({ hiba: "Felhasználónév már foglalt" });
     }
-
 
     const hash = await bcrypt.hash(jelszo, 10);
 
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       username: user.username,
     });
   } catch (err) {
-    console.error(err);
+    console.error("DB hiba:", err);
     res.status(500).json({ hiba: "Szerverhiba" });
   }
 }

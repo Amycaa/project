@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       username: user.username,
     });
   } catch (err) {
-    console.error(err);
+    console.error("DB hiba:", err);
     res.status(500).json({ hiba: "Szerverhiba" });
   }
 }
