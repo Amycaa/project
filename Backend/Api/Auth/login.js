@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { pool } from "../../db.js"; 
+import { pool } from "../../db.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -14,29 +14,33 @@ export default async function handler(req, res) {
   }
 
   try {
-    const eredmeny = await pool.query(
+    const result = await pool.query(
       "SELECT * FROM users WHERE username = $1",
       [felhasznaloNev]
     );
 
-    if (eredmeny.rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(401).json({ hiba: "Hibás felhasználónév vagy jelszó" });
     }
 
-    const felhasznalo = eredmeny.rows[0];
+    const user = result.rows[0];
 
-    const egyezik = await bcrypt.compare(jelszo, felhasznalo.password_hash);
-    if (!egyezik) {
+    const match = await bcrypt.compare(jelszo, user.password_hash);
+    if (!match) {
       return res.status(401).json({ hiba: "Hibás felhasználónév vagy jelszó" });
     }
 
     const token = jwt.sign(
-      { id: felhasznalo.id, username: felhasznalo.username },
+      { id: user.id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ token, userId: felhasznalo.id });
+    res.status(200).json({
+      token,
+      userId: user.id,
+      username: user.username,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ hiba: "Szerverhiba" });
