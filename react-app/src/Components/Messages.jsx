@@ -62,14 +62,14 @@ function Messages() {
             <div id="messages-div" className="chat-window">
                 {uzenetek.map((msg) => (
                     <div key={msg.id} className={`bubble ${msg.sender_id === user.id ? "sajat" : "mas"}`}>
-                        <small>{msg.sender_name}</small>
+                        <small className="nev">{msg.sender_name}</small>
                         <p>{msg.content}</p>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
             </div>
             
-            <div className="input-area">
+            <div className="input-sor">
                 <input 
                     placeholder="Új üzenet..." 
                     value={ujUzenet}

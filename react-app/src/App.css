@@ -163,7 +163,7 @@ h2 {
 .bubble {
     max-width: 70%;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 5px;
     border-radius: 12px;
 }
 
@@ -177,13 +177,15 @@ h2 {
     align-self: flex-start;
     background-color: #e9e9eb;
     color: black;
+
 }
 
 .nev {
-    font-size: 0.7rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: bolder;
     display: block;
     margin-bottom: 3px;
+
 }
 
 .input-sor {
@@ -192,6 +194,7 @@ h2 {
     gap: 5px;
     margin-top: 10px;
     align-items: center;
+    justify-content: center;
 }
 
 .input-sor input {
