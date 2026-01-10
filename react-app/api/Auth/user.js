@@ -1,12 +1,15 @@
-import { pool } from "../db.js";
+import { pool } from './db.js';
 
 export default async function handler(req, res) {
-  const { userId } = req.query;
+  if (req.method !== 'GET') {
+    return res.status(405).json({ hiba: "Method not allowed" });
+  }
 
-  const eredmeny = await pool.query(
-    "SELECT * FROM messages WHERE receiver_id = $1",
-    [userId]
-  );
-
-  res.json(eredmeny.rows);
+  try {
+    const result = await pool.query('SELECT id, username FROM users ORDER BY username ASC');
+    return res.status(200).json(result.rows);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ hiba: "Nem sikerült lekérni a felhasználókat." });
+  }
 }

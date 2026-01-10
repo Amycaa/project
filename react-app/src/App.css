@@ -118,10 +118,6 @@ button {
   background-color: #444;
 }
 
-#messages-div {
-  height: 600px;
-}
-
 .login, .register, .users, .messages {
   display: flex;
   flex-direction: column;
@@ -150,4 +146,55 @@ button {
 h2 {
   text-align: center;
   
+}
+
+.chat-window {
+    width: 100%;
+    height: 350px;
+    overflow-y: auto;
+    background-color: grey;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.bubble {
+    max-width: 70%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.sajat {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: black;
+}
+
+.mas {
+    align-self: flex-start;
+    background-color: #e9e9eb;
+    color: black;
+}
+
+.nev {
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.input-sor {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.input-sor input {
+    flex: 1;
+    margin-top: 0;
 }

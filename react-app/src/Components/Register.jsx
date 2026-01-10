@@ -49,7 +49,7 @@ function Register() {
     <div className="register">
       <h2>Regisztráció</h2>
 
-      {hiba && <p className="hiba" style={{color: "red"}}>{hiba}</p>}
+      {hiba && <p className="hiba" style={{color: "red", textAlign:"center"}}>{hiba}</p>}
 
       <input
         type="text"

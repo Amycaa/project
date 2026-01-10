@@ -53,8 +53,8 @@ function Login() {
     <div className="login">
       <h2>Bejelentkezés</h2>
 
-      {sikerUzenet && <p className="siker">{sikerUzenet}</p>}
-      {hiba && <p className="hiba">{hiba}</p>}
+      
+      {hiba && <p style={{textAlign:"center"}} className="hiba">{hiba}</p>}
       
         <input
           placeholder="Felhasználónév"
