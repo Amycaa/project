@@ -9,7 +9,7 @@ function Messages() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     const uzenetekLekerese = async () => {
-        const res = await fetch("/api/Messages");
+        const res = await fetch("/api/Messages/messages");
         if (res.ok) {
             const adat = await res.json();
             setUzenetek(adat);
