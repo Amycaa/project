@@ -24,34 +24,30 @@ function Login() {
   }, []);
 
   const belepes = async () => {
-    if (!felhasznaloNev || !jelszo) {
-      setHiba("Minden mező kitöltése kötelező!");
+    
+  try {
+    const response = await fetch("/api/Auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        username: felhasznaloNev, 
+        password: jelszo 
+      })
+    });
+
+    const adat = await response.json();
+
+    if (!response.ok) {
+      setHiba(adat.message || "Hiba történt"); 
       return;
     }
 
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ felhasznaloNev, jelszo })
-      });
-
-      const adat = await response.json();
-
-      if (!response.ok) {
-        setHiba(adat.hiba);
-        return;
-      }
-
-      localStorage.setItem("token", adat.token);
-      localStorage.setItem("userId", adat.userId);
-
-      navigate("/messages");
-
-    } catch (error) {
-      setHiba("Szerver hiba");
-    }
-  };
+    localStorage.setItem("user", JSON.stringify(adat.user));
+    navigate("/messages");
+  } catch (error) {
+    setHiba("Nem sikerült kapcsolódni a szerverhez.");
+  }
+};
 
   return (
     <div className="login">
