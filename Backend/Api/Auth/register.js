@@ -1,44 +1,30 @@
-import bcrypt from "bcrypt";
-import { pool } from "../../db.js";
+import { pool } from '../../db.js';
+import bcrypt from 'bcryptjs';
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ hiba: "Csak POST engedélyezett" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
   const { felhasznaloNev, jelszo } = req.body;
 
-  if (!felhasznaloNev || !jelszo) {
-    return res.status(400).json({ hiba: "Minden mező kitöltése kötelező" });
-  }
-
   try {
-    // Ellenőrizzük, hogy létezik-e már a felhasználó
-    const userCheck = await pool.query(
-      "SELECT * FROM users WHERE username = $1",
-      [felhasznaloNev]
-    );
-
+    const userCheck = await pool.query('SELECT * FROM users WHERE username = $1', [felhasznaloNev]);
     if (userCheck.rows.length > 0) {
-      return res.status(409).json({ hiba: "Felhasználónév már foglalt" });
+      return res.status(400).json({ message: "Ez a felhasználónév már foglalt!" });
     }
 
-    const hash = await bcrypt.hash(jelszo, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(jelszo, salt);
 
-    const result = await pool.query(
-      "INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING id, username",
-      [felhasznaloNev, hash]
+    await pool.query(
+      'INSERT INTO users (username, password) VALUES ($1, $2)',
+      [felhasznaloNev, hashedPassword]
     );
 
-    const user = result.rows[0];
-
-    res.status(201).json({
-      uzenet: "Regisztráció sikeres",
-      userId: user.id,
-      username: user.username,
-    });
+    return res.status(201).json({ message: "Sikeres regisztráció!" });
   } catch (err) {
-    console.error("DB hiba:", err);
-    res.status(500).json({ hiba: "Szerverhiba" });
+    console.error("Regisztrációs hiba:", err);
+    return res.status(500).json({ message: "Szerver hiba történt a mentéskor." });
   }
 }
