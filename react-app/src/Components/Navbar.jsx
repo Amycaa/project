@@ -1,39 +1,55 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../App.css";
 
 function Navbar() {
   const [nyitva, setNyitva] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  if (location.pathname === "/login") {
+    return null;
+  }
+
+    if (location.pathname === "/users") {
+    return null;
+  }
 
   const kilepes = () => {
+    localStorage.clear();
+    setNyitva(false);
     navigate("/login");
   };
 
-  return (
-    <nav className="navbar">
-      <div className="navbar-fejlec">
-        <button className="menu-gomb" onClick={() => setNyitva(!nyitva)}>
-          ☰
-        </button>
-      </div>
+  const isRegisterPage = location.pathname === "/register";
 
+  return (
+    <div className="navbar-wrapper">
+    <nav className="navbar">
+      <button className="menu-gomb" onClick={() => setNyitva(!nyitva)}>
+        ☰
+      </button>
       {nyitva && (
         <div className="dropdown-menu">
-          <button onClick={() => {
-            navigate("/users");
-            setNyitva(false);
-          }}>
-            Fiók kezelés
-          </button>
-
-          <button onClick={kilepes}>
-            Kilépés
-          </button>
+           {isRegisterPage ? (
+              <button onClick={() => { navigate("/login"); setNyitva(false); }}>
+                Belépés
+              </button>
+            ) : (
+              <>
+                <button onClick={() => { navigate("/users"); setNyitva(false); }}>
+                  Fiók kezelés
+                </button>
+                <button style={{marginBottom:"10px"}} onClick={kilepes}>
+                  Kilépés
+                </button>
+              </>
+            )}
         </div>
       )}
     </nav>
-  );
+  </div>
+);
 }
 
 export default Navbar;

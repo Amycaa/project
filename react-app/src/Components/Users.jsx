@@ -13,7 +13,8 @@ function Users() {
         <div className="users">
             <h2>Fiók kezelés</h2>
             <button onClick={() => navigate("/messages")} style={style1}>Üzenetek</button>
-            
+            <button onClick={() => navigate("/login")} style={style1}>Kilépés</button>
+
         </div>
     )
 
