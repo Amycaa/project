@@ -3,12 +3,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
-// Megkeressük a jelenlegi fájl mappáját
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Beállítjuk, hogy a .env eggyel feljebb van (az Api mappából kiindulva a Backend-ben)
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const { Pool } = pg;
 
